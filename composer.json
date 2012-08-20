@@ -1,0 +1,29 @@
+{
+    "name": "zucchi/bootstrap",
+    "description": "Simple Module to allow facilitate use of Twitter Bootstrap",
+    "type": "module",
+    "keywords": [
+        "twitter",
+        "bootstrap",
+        "zf2"
+    ],
+    "homepage": "https://github.com/zucchi/ZucchiBootstrap",
+    "authors" : [{
+        "name": "Matt Cockayne",
+        "email" : "matt@zucchi.co.uk",
+        "homepage" : "http://devincharge.com/"
+    }],
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZucchiBootstrap": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
+    }
+}
