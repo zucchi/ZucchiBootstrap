@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Zucchi Components documentation build configuration file, created by
+# Zucchi Bootstrap documentation build configuration file, created by
 # sphinx-quickstart on Wed Aug  1 11:50:06 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Zucchi Components'
+project = u'Zucchi Bootstrap'
 copyright = u'2012, Zucchi'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ZucchiComponentsdoc'
+htmlhelp_basename = 'ZucchiBootstrapdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'ZucchiComponents.tex', u'Zucchi Components Documentation',
+  ('index', 'ZucchiBootstrap.tex', u'Zucchi Bootstrap Documentation',
    u'Zucchi', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'zucchicomponents', u'Zucchi Components Documentation',
+    ('index', 'zucchibootstrap', u'Zucchi Bootstrap Documentation',
      [u'Zucchi'], 1)
 ]
 
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ZucchiComponents', u'Zucchi Components Documentation',
-   u'Zucchi', 'ZucchiComponents', 'One line description of project.',
+  ('index', 'ZucchiBootstrap', u'Zucchi Bootstrap Documentation',
+   u'Zucchi', 'ZucchiBootstrap', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -245,7 +245,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'Zucchi Components'
+epub_title = u'Zucchi Bootstrap'
 epub_author = u'Zucchi'
 epub_publisher = u'Zucchi'
 epub_copyright = u'2012, Zucchi'
