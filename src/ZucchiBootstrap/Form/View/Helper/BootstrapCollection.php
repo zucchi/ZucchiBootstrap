@@ -23,10 +23,10 @@ namespace ZucchiBootstrap\Form\View\Helper;
 
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
-use Zend\Form\Element\Collection as CollectionElement;
+use Zend\Form\Element\BootstrapCollection as CollectionElement;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
-use Zucchi\Form\View\Helper\BootstrapRow;
+use ZucchiBootstrap\Form\View\Helper\BootstrapRow;
 
 /**
  * @category   Zend
@@ -35,7 +35,7 @@ use Zucchi\Form\View\Helper\BootstrapRow;
  * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Collection extends AbstractHelper
+class BootstrapCollection extends AbstractHelper
 {
     /**
      * the style of form to generate

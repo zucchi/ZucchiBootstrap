@@ -35,7 +35,7 @@ use Zend\Form\View\Helper\FormElementErrors;
  * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Row extends AbstractHelper
+class BootstrapRow extends AbstractHelper
 {
     /**
      * the style of form to generate

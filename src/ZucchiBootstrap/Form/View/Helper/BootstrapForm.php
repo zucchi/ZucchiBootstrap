@@ -30,7 +30,7 @@ use \Zend\Form\Form;
  * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Form extends AbstractHelper
+class BootstrapForm extends AbstractHelper
 {
     public function __invoke(Form $form, $style = 'vertical')
     { 
