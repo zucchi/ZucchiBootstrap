@@ -16,4 +16,11 @@ You can now include the following in your layout to make use of Twitters Bootstr
 
     <?=$this->headLink()->appendStylesheet($this->basePath() . '/_css/zucchi/bootstrap/bootstrap.min.css')
                         ->appendStylesheet($this->basePath() . '/_css/zucchi/bootstrap/bootstrap-responsive.min.css')?>
-    <?=$this->headScript()->appendFile($this->basePath() . '/_js/zucchi/bootstrap/bootstrap.min.js') ?> 
+    <?=$this->headScript()->appendFile($this->basePath() . '/_js/zucchi/bootstrap/bootstrap.min.js') ?>
+    
+*Available Features*
+
+*   Form View Helpers
+*   Navigation View Helpers (navbar only)
+
+More features to come
