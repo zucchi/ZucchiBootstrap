@@ -138,6 +138,11 @@ class BootstrapRow extends AbstractHelper
         $elementHelper       = $this->getElementHelper();
         $elementErrorsHelper = $this->getElementErrorsHelper();
         $label               = $element->getLabel();
+        if ($label && null !== ($translator = $this->getTranslator())) {
+            $label = $translator->translate(
+                $label, $this->getTranslatorTextDomain()
+            );
+        }
         $elementErrorsHelper->setMessageOpenFormat('<div%s>')
                             ->setMessageSeparatorString('<br/>')
                             ->setMessageCloseString('</div>');
@@ -335,8 +340,7 @@ class BootstrapRow extends AbstractHelper
 
         return $this->elementErrorsHelper;
     }
-    
-    /**http://hyperion.local.creatingit.co.uk
+        /** http://hyperion.local.creatingit.co.uk
      * get a string representation of the elements status
      * 
      * @param ElementInterface $element
@@ -429,6 +433,11 @@ class BootstrapRow extends AbstractHelper
                 }
                 if (isset($help['content'])) {
                     $content = $help['content'];
+                    if (null !== ($translator = $this->getTranslator())) {
+                        $content = $translator->translate(
+                            $content, $this->getTranslatorTextDomain()
+                        );
+                    }
                 }
             } else {
                 

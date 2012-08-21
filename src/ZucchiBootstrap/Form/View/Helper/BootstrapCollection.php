@@ -116,7 +116,11 @@ class BootstrapCollection extends AbstractHelper
             $label = $element->getLabel();
             if (!empty($label)) {
                 $label = $escapeHtmlHelper($label);
-
+                if (null !== ($translator = $this->getTranslator())) {
+                    $label = $translator->translate(
+                        $label, $this->getTranslatorTextDomain()
+                    );
+                }
                 $markup = sprintf(
                     '<fieldset><legend>%s</legend>%s</fieldset>',
                     $label,
