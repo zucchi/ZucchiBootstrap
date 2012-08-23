@@ -3,6 +3,7 @@
 namespace ZucchiBootstrap;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -24,4 +25,5 @@ class Module implements AutoloaderProviderInterface
     {
         return include __DIR__ . '/config/module.config.php';
     }
+    
 }
