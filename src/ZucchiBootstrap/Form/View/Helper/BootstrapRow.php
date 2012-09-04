@@ -23,7 +23,7 @@ namespace ZucchiBootstrap\Form\View\Helper;
 
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception;
-use Zend\Form\View\Helper\AbstractHelper;
+use Zend\Form\View\Helper\FormRow;
 use Zend\Form\View\Helper\FormLabel;
 use Zend\Form\View\Helper\FormElement;
 use Zend\Form\View\Helper\FormElementErrors;
@@ -35,7 +35,7 @@ use Zend\Form\View\Helper\FormElementErrors;
  * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class BootstrapRow extends AbstractHelper
+class BootstrapRow extends FormRow
 {
     /**
      * the style of form to generate
@@ -126,7 +126,7 @@ class BootstrapRow extends AbstractHelper
 
     /**
      * Utility form helper that renders a label (if it exists), an element and errors
-     *protected $group
+     * 
      * @param ElementInterface $element
      * @return string
      * @throws \Zend\Form\Exception\DomainException
@@ -137,16 +137,14 @@ class BootstrapRow extends AbstractHelper
         $labelHelper         = $this->getLabelHelper();
         $elementHelper       = $this->getElementHelper();
         $elementErrorsHelper = $this->getElementErrorsHelper();
+        
         $label               = $element->getLabel();
-        if ($label && null !== ($translator = $this->getTranslator())) {
-            $label = $translator->translate(
-                $label, $this->getTranslatorTextDomain()
-            );
-        }
         $elementErrorsHelper->setMessageOpenFormat('<div%s>')
                             ->setMessageSeparatorString('<br/>')
                             ->setMessageCloseString('</div>');
+        $inputErrorClass = $this->getInputErrorClass();
         $elementErrors       = $elementErrorsHelper->render($element, array('class' => 'help-block'));
+        
         $elementStatus       = $this->getElementStatus($element);
         $type                = $element->getAttribute('type');
         $bootstrapOptions    = $element->getOption('bootstrap');
@@ -182,10 +180,17 @@ class BootstrapRow extends AbstractHelper
             }
             
             if (in_array($type, $this->groupElements)) {
-                $options = $element->getAttribute('options');
+                $options = $element->getValueOptions();
                 foreach ($options as $key => $optionSpec) {
-                    if (!isset($optionSpec['label_attributes']['class'])) {
+                    if (is_string($optionSpec)) {
+                        $tVal = $options[$key];
+                        $options[$key] = array();
+                        $options[$key]['label'] = $tVal;
+                        $options[$key]['value'] = $key;
                         $options[$key]['label_attributes']['class'] = ($type == 'radio') ? 'radio' : 'checkbox';
+                        $options[$key]['label_attributes']['class'] .= (in_array($formStyle, $this->compactFormStyles)) ? ' inline' : null;
+                    } else {
+                        $options[$key]['label_attributes']['class'] .= ($type == 'radio') ? 'radio' : 'checkbox';
                         $options[$key]['label_attributes']['class'] .= (in_array($formStyle, $this->compactFormStyles)) ? ' inline' : null;
                     }
                 }
@@ -220,13 +225,23 @@ class BootstrapRow extends AbstractHelper
      * @param null|string $labelPosition
      * @return string|FormRow
      */
-    public function __invoke(ElementInterface $element = null, $formStyle = 'vertical')
-    {
+    public function __invoke(
+        ElementInterface $element = null, 
+        $formStyle = 'vertical', 
+        $labelPosition = null, 
+        $renderErrors = true
+    ) {
         if (!$element) {
             return $this;
         }
         
         $this->setFormStyle($formStyle);
+        
+        if ($labelPosition !== null) {
+            $this->setLabelPosition($labelPosition);
+        }
+
+        $this->setRenderErrors($renderErrors);
 
         return $this->render($element);
     }
@@ -254,93 +269,6 @@ class BootstrapRow extends AbstractHelper
     }
     
     /**
-     * Set the attributes for the row label
-     *
-     * @param  array $labelAttributes
-     * @return FormRow
-     */
-    public function setLabelAttributes($labelAttributes)
-    {
-        $this->labelAttributes = $labelAttributes;
-        return $this;
-    }
-
-    /**
-     * Get the attributes for the row label
-     *
-     * @return array
-     */
-    public function getLabelAttributes()
-    {
-        return $this->labelAttributes;
-    }
-
-    /**
-     * Retrieve the FormLabel helper
-     *
-     * @return FormLabel
-     */
-    protected function getLabelHelper()
-    {
-        if ($this->labelHelper) {
-            return $this->labelHelper;
-        }
-
-        if (method_exists($this->view, 'plugin')) {
-            $this->labelHelper = $this->view->plugin('form_label');
-        }
-
-        if (!$this->labelHelper instanceof FormLabel) {
-            $this->labelHelper = new FormLabel();
-        }
-
-        return $this->labelHelper;
-    }
-
-    /**
-     * Retrieve the FormElement helper
-     *
-     * @return FormElement
-     */
-    protected function getElementHelper()
-    {
-        if ($this->elementHelper) {
-            return $this->elementHelper;
-        }
-
-        if (method_exists($this->view, 'plugin')) {
-            $this->elementHelper = $this->view->plugin('form_element');
-        }
-
-        if (!$this->elementHelper instanceof FormElement) {
-            $this->elementHelper = new FormElement();
-        }
-
-        return $this->elementHelper;
-    }
-
-    /**
-     * Retrieve the FormElementErrors helper
-     *
-     * @return FormElementErrors
-     */
-    protected function getElementErrorsHelper()
-    {
-        if ($this->elementErrorsHelper) {
-            return $this->elementErrorsHelper;
-        }
-        
-        if (method_exists($this->view, 'plugin')) {
-            $this->elementErrorsHelper = $this->view->plugin('form_element_errors');
-        }
-
-        if (!$this->elementErrorsHelper instanceof FormElementErrors) {
-            $this->elementErrorsHelper = new FormElementErrors();
-        }
-
-        return $this->elementErrorsHelper;
-    }
-        /** http://hyperion.local.creatingit.co.uk
      * get a string representation of the elements status
      * 
      * @param ElementInterface $element
