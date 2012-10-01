@@ -155,7 +155,7 @@ class BootstrapRow extends FormRow
         
         if ($type == 'hidden') {
             $markup = $elementHelper->render($element);
-            $markup .= $elementErrors;
+            $markup .= $elementErrorsHelper->render($element, array('class' => 'alert alert-error'));
         } else {
             if (!empty($label)) {
                 if (in_array($formStyle, $this->compactFormStyles)) {
@@ -194,7 +194,7 @@ class BootstrapRow extends FormRow
                         $options[$key]['label_attributes']['class'] .= (in_array($formStyle, $this->compactFormStyles)) ? ' inline' : null;
                     }
                 }
-                $element->setAttribute('options', $options);
+                $element->setAttribute('value_options', $options);
             }
             
             

@@ -23,6 +23,7 @@ namespace ZucchiBootstrap\Form\View\Helper;
 
 use \Zend\View\Helper\AbstractHelper;
 use \Zend\Form\Form;
+use \Zend\Form\Fieldset;
 
 /**
  * @package    Zucchi_View
@@ -43,14 +44,13 @@ class BootstrapForm extends AbstractHelper
         
         $output .= $this->view->form()->openTag($form);
         
-        $elements = $form->getElements();
+        $elements = $form->getIterator();
         foreach ($elements as $key => $element) {
-            $output .= $this->view->bootstrapRow($element, $style);
-        }
-        
-        $fieldsets = $form->getFieldsets();
-        foreach ($fieldsets as $set) {
-            $output .= $this->view->bootstrapCollection($set, $style);
+            if ($element instanceof Fieldset) {
+                $output .= $this->view->bootstrapCollection($element, $style);
+            } else {
+                $output .= $this->view->bootstrapRow($element, $style);
+            }
         }
         
         $output .= $this->view->form()->closeTag($form);
