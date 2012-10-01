@@ -22,5 +22,6 @@ You can now include the following in your layout to make use of Twitters Bootstr
 
 *   Form View Helpers
 *   Navigation View Helpers (navbar only)
+*   Alert View Helpers
 
 More features to come
