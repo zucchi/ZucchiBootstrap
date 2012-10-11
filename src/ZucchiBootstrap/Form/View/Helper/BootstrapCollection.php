@@ -24,9 +24,11 @@ namespace ZucchiBootstrap\Form\View\Helper;
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
 use Zend\Form\Element\Collection as CollectionElement;
+use Zend\Form\Element\Button;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 use ZucchiBootstrap\Form\View\Helper\BootstrapRow;
+
 
 /**
  * @category   Zend
@@ -90,24 +92,28 @@ class BootstrapCollection extends AbstractHelper
         $formStyle = $this->getFormStyle();
 
         $markup = '';
+        $attribs = '';
 
         switch ($formStyle) {
             case 'table':
                 $markup .= $this->getTableHeaderMarkup($element);
                 $markup .= $this->getTableRowMarkup($element);
+                $attribs .= ' id="' . $element->getName() . '-table" ';
                 break;
             default:
                 $markup .= $this->getElementMarkup($element, $formStyle);
                 break;
         }
 
+        $markup .= $this->getTableButtonsMarkup($element, $formStyle);
+
         $markup .= $this->getTemplateMarkup($element, $formStyle);
 
-        $class = ' class="' . $element->getAttribute('class') . '" ';
+        $attribs .= ' class="' . $element->getAttribute('class') . '" ';
 
         $markup = sprintf(
             $this->templates[$formStyle],
-            $class,
+            $attribs,
             $markup
         );
 
@@ -250,7 +256,8 @@ class BootstrapCollection extends AbstractHelper
             $escapeHtmlAttribHelper = $this->getEscapeHtmlAttrHelper();
 
             $markup .= sprintf(
-                '<span data-template="%s"></span>',
+                '<span id="%s" data-template="%s"></span>',
+                $element->getName() . '-template',
                 $escapeHtmlAttribHelper($templateMarkup)
             );
         }
@@ -300,6 +307,7 @@ class BootstrapCollection extends AbstractHelper
             $markup .= $rowHelper($elementOrFieldset, 'tableHead');
         }
 
+
         return $markup;
     }
 
@@ -323,11 +331,27 @@ class BootstrapCollection extends AbstractHelper
             }
         }
 
-        if (isset($options['bootstrap'])) {
 
-        }
 
         return $markup;
     }
 
+    public function getTableButtonsMarkup(ElementInterface $element, $formStyle)
+    {
+        $markup = '';
+        $options = $element->getOptions();
+
+        if (isset($options['bootstrap']['buttons'][$formStyle])) {
+            $buttons = $options['bootstrap']['buttons'][$formStyle];
+            $markup .= '<td>';
+                foreach ($buttons as $name => $attribs) {
+                    $b = new Button($name);
+                    $b->setAttributes($attribs);
+                    $markup .= $this->getView()->formButton($b, $name);
+                }
+            $markup .= '</td>';
+        }
+
+        return $markup;
+    }
 }
