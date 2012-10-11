@@ -61,6 +61,8 @@ class BootstrapRow extends FormRow
         'inline' => '%4$s%5$s',
         'search' => '%4$s%5$s',
         'horizontal' => '<div class="control-group %6$s">%1$s%2$s%3$s<div class="controls">%4$s%5$s</div></div>',
+        'tableHead' => '<th>%2$s</th>',
+        'tableRow' => '<td class="%6$s">%4$s</td>',
     
     );
     
@@ -73,23 +75,11 @@ class BootstrapRow extends FormRow
     );
     
     /**
-     * template for element append/prepend
-     * 
-     * %1$s - prepend/append class
-     * %2$s - prepend span
-     * %3$s - element
-     * %4$s - append span
-     * 
-     * @var string
-     */
-    protected $elementPrependAppendTemplate = '<div class="%1$s">%2$s%3$s%4$s</div>';
-    
-    /**
      * @var array
      */
     protected $labelAttributes;
 
-    /**<a href="http://www.michaelgallego.fr/blog/?p=190" title="New Zend\Form features explained" target="_blank">blog post</a>
+    /**
      * @var FormLabel
      */
     protected $labelHelper;
@@ -121,6 +111,7 @@ class BootstrapRow extends FormRow
     protected $compactFormStyles = array(
         'inline',
         'search',
+        'tableRow',
     );
 
 
@@ -152,10 +143,14 @@ class BootstrapRow extends FormRow
         
         $labelOpen = $labelClose = $labelAttributes = ''; // initialise label variables
         $elementHelp = '';
-        
+
+        $markup = "";
+
         if ($type == 'hidden') {
-            $markup = $elementHelper->render($element);
-            $markup .= $elementErrorsHelper->render($element, array('class' => 'alert alert-error'));
+            if ($formStyle != "tableHead" ) {
+                $markup .= $elementHelper->render($element);
+                $markup .= $elementErrorsHelper->render($element, array('class' => 'alert alert-error'));
+            }
         } else {
             if (!empty($label)) {
                 if (in_array($formStyle, $this->compactFormStyles)) {
@@ -202,7 +197,7 @@ class BootstrapRow extends FormRow
             
             $elementString = $this->renderBootstrapOptions($elementString, $bootstrapOptions);
             
-            $markup = sprintf($this->defaultElementTemplates[$formStyle], 
+            $markup = sprintf($this->defaultElementTemplates[$formStyle],
                 $labelOpen,
                 $label,
                 $labelClose,
@@ -318,7 +313,7 @@ class BootstrapRow extends FormRow
     public function renderBootstrapOptions($elementString, $options)
     {
         $escapeHtmlHelper    = $this->getEscapeHtmlHelper();
-        
+
         if (isset($options['prepend']) || isset($options['append'])) {
             $template = $this->bootstrapTemplates['prependAppend'];
             $class = '';
@@ -342,13 +337,13 @@ class BootstrapRow extends FormRow
                     $append .= '<span class="add-on">' . $escapeHtmlHelper($a) . '</span>';
                 }
             }
-            
-            $elementString = sprintf($template, 
-                $class, 
-                $prepend, 
-                $elementString, 
+
+            $elementString = sprintf($template,
+                $class,
+                $prepend,
+                $elementString,
                 $append);
-            
+
         }
         if (isset($options['help'])) {
             $help = $options['help'];

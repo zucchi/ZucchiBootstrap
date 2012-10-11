@@ -23,7 +23,7 @@ namespace ZucchiBootstrap\Form\View\Helper;
 
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
-use Zend\Form\Element\BootstrapCollection as CollectionElement;
+use Zend\Form\Element\Collection as CollectionElement;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 use ZucchiBootstrap\Form\View\Helper\BootstrapRow;
@@ -42,6 +42,16 @@ class BootstrapCollection extends AbstractHelper
      * @var string
      */
     protected $formStyle = 'vertical';
+
+    protected $templates = array(
+        'vertical' => '<div%s>%s</div>',
+        'inline' => '<div%s>%s</div>',
+        'search' => '<div%s>%s</div>',
+        'horizontal' => '<div%s>%s</div>',
+        'table' => '<table%s>%s</table>',
+        'tableHead' => '<thead><tr%s>%s</tr></thead>',
+        'tableRow' => '<tr%s>%s</tr>',
+    );
     
     /**
      * If set to true, collections are automatically wrapped around a fieldset
@@ -55,62 +65,56 @@ class BootstrapCollection extends AbstractHelper
      */
     protected $rowHelper;
 
-
     /**
      * Render a collection by iterating through all fieldsets and elements
      *
      * @param  ElementInterface $element
      * @return string
      */
-    public function render(ElementInterface $element)
+    public function render(ElementInterface $element, $forceStyle = null)
     {
         $renderer = $this->getView();
         if (!method_exists($renderer, 'plugin')) {
             // Bail early if renderer is not pluggable
             return '';
         }
+        $options = $element->getOptions();
+
+        // override formstyle
+        if ($forceStyle) {
+            $this->setFormStyle($forceStyle);
+        } else if (isset($options['bootstrap']['displayAs'])) {
+            $this->setFormStyle($options['bootstrap']['displayAs']);
+        }
+        // do this for scope
+        $formStyle = $this->getFormStyle();
 
         $markup = '';
-        $templateMarkup = '';
-        $escapeHtmlHelper = $this->getEscapeHtmlHelper();
-        $rowHelper = $this->getRowHelper();
 
-        if ($element instanceof CollectionElement && $element->shouldCreateTemplate()) {
-            $elementOrFieldset = $element->getTemplateElement();
 
-            if ($elementOrFieldset instanceof FieldsetInterface) {
-                $templateMarkup .= $this->render($elementOrFieldset);
-            } elseif ($elementOrFieldset instanceof ElementInterface) {
-                $templateMarkup .= $rowHelper($elementOrFieldset, $this->getFormStyle());
-            }
+
+        switch ($formStyle) {
+            case 'table':
+                $markup .= $this->getTableHeaderMarkup($element);
+                $markup .= $this->getTableRowMarkup($element);
+                break;
+            default:
+                $markup .= $this->getElementMarkup($element, $formStyle);
+                break;
         }
 
-        foreach($element->getIterator() as $elementOrFieldset) {
-            if ($elementOrFieldset instanceof FieldsetInterface) {
-                $markup .= $this->render($elementOrFieldset);
-            } elseif ($elementOrFieldset instanceof ElementInterface) {
-                $markup .= $rowHelper($elementOrFieldset, $this->getFormStyle());
-            }
-        }
 
-        // If $templateMarkup is not empty, use it for simplify adding new element in JavaScript
-        if (!empty($templateMarkup)) {
-            $escapeHtmlAttribHelper = $this->getEscapeHtmlAttrHelper();
-
-            $markup .= sprintf(
-                '<span data-template="%s"></span>',
-                $escapeHtmlAttribHelper($templateMarkup)
-            );
-        }
+        $markup .= $this->getTemplateMarkup($element, $formStyle);
 
         $class = ' class="' . $element->getAttribute('class') . '" ';
-        
+
         $markup = sprintf(
-            '<div%s>%s</div>',
+            $this->templates[$formStyle],
             $class,
             $markup
         );
-        
+
+        $escapeHtmlHelper = $this->getEscapeHtmlHelper();
         // Every collection is wrapped by a fieldset if needed
         if ($this->shouldWrap) {
             $label = $element->getLabel();
@@ -128,7 +132,6 @@ class BootstrapCollection extends AbstractHelper
                 );
             }
         }
-
         return $markup;
     }
 
@@ -220,4 +223,88 @@ class BootstrapCollection extends AbstractHelper
         
         return $this->rowHelper;
     }
+
+    public function getTemplateMarkup(ElementInterface $element, $formStyle)
+    {
+        $markup = '';
+        $templateMarkup = '';
+        $escapeHtmlHelper = $this->getEscapeHtmlHelper();
+        $rowHelper = $this->getRowHelper();
+
+        if ($element instanceof CollectionElement && $element->shouldCreateTemplate()) {
+            $elementOrFieldset = $element->getTemplateElement();
+
+            if ($elementOrFieldset instanceof FieldsetInterface) {
+                $templateMarkup .= $this->render($elementOrFieldset);
+            } elseif ($elementOrFieldset instanceof ElementInterface) {
+                $templateMarkup .= $rowHelper($elementOrFieldset, $formStyle);
+            }
+        }
+
+        // If $templateMarkup is not empty, use it for simplify adding new element in JavaScript
+        if (!empty($templateMarkup)) {
+            $escapeHtmlAttribHelper = $this->getEscapeHtmlAttrHelper();
+
+            $markup .= sprintf(
+                '<span data-template="%s"></span>',
+                $escapeHtmlAttribHelper($templateMarkup)
+            );
+        }
+
+        return $markup;
+    }
+
+
+    public function getElementMarkup(ElementInterface $element, $formStyle)
+    {
+        $markup = '';
+        $rowHelper = $this->getRowHelper();
+
+        foreach($element->getIterator() as $elementOrFieldset) {
+            if ($elementOrFieldset instanceof FieldsetInterface) {
+                $markup .= $this->render($elementOrFieldset);
+            } elseif ($elementOrFieldset instanceof ElementInterface) {
+                $markup .= $rowHelper($elementOrFieldset, $formStyle);
+            }
+        }
+        return $markup;
+    }
+
+    public function getTableHeaderMarkup(ElementInterface $element)
+    {
+        $markup = '';
+        $rowHelper = $this->getRowHelper();
+
+        $elementOrFieldset = $element->getTemplateElement();
+
+        if ($elementOrFieldset instanceof FieldsetInterface) {
+            $markup .= $this->render($elementOrFieldset, 'tableHead');
+        } elseif ($elementOrFieldset instanceof ElementInterface) {
+            $markup .= $rowHelper($elementOrFieldset, 'tableHead');
+        }
+
+        return $markup;
+    }
+
+    public function getTableRowMarkup(ElementInterface $element)
+    {
+        $options = $element->getOptions();
+        $markup = '';
+        $rowHelper = $this->getRowHelper();
+
+        foreach($element->getIterator() as $elementOrFieldset) {
+            if ($elementOrFieldset instanceof FieldsetInterface) {
+                $markup .= $this->render($elementOrFieldset);
+            } elseif ($elementOrFieldset instanceof ElementInterface) {
+                $markup .= $rowHelper($elementOrFieldset, 'tableRow');
+            }
+        }
+
+        if (isset($options['bootstrap'])) {
+
+        }
+
+        return $markup;
+    }
+
 }
