@@ -21,6 +21,9 @@ You can now include the following in your layout to make use of Twitters Bootstr
 *Available Features*
 
 *   Form View Helpers
+    *    Bootstrap Form - Render a complete form
+    *    Bootstrap Collection - Render a collection Element
+    *    Bootstrap Row = Render an element
 *   Navigation View Helpers (navbar only)
 *   Alert View Helpers
 
