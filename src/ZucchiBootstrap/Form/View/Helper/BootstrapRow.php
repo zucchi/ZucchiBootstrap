@@ -306,6 +306,7 @@ class BootstrapRow extends FormRow
     }
     
     /**
+     * Render "bootstrap" options
      * 
      * @param string $elementString
      * @param array|Traversable $options

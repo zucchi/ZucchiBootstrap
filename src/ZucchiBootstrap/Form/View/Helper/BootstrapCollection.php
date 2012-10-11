@@ -91,8 +91,6 @@ class BootstrapCollection extends AbstractHelper
 
         $markup = '';
 
-
-
         switch ($formStyle) {
             case 'table':
                 $markup .= $this->getTableHeaderMarkup($element);
@@ -102,7 +100,6 @@ class BootstrapCollection extends AbstractHelper
                 $markup .= $this->getElementMarkup($element, $formStyle);
                 break;
         }
-
 
         $markup .= $this->getTemplateMarkup($element, $formStyle);
 
@@ -224,6 +221,13 @@ class BootstrapCollection extends AbstractHelper
         return $this->rowHelper;
     }
 
+    /**
+     * Get Markup for template
+     *
+     * @param \Zend\Form\ElementInterface $element
+     * @param string $formStyle
+     * @return string
+     */
     public function getTemplateMarkup(ElementInterface $element, $formStyle)
     {
         $markup = '';
@@ -255,6 +259,13 @@ class BootstrapCollection extends AbstractHelper
     }
 
 
+    /**
+     * Get Markup for element
+     *
+     * @param \Zend\Form\ElementInterface $element
+     * @param string $formStyle
+     * @return string
+     */
     public function getElementMarkup(ElementInterface $element, $formStyle)
     {
         $markup = '';
@@ -270,6 +281,12 @@ class BootstrapCollection extends AbstractHelper
         return $markup;
     }
 
+    /**
+     * get markup for table header based on elements
+     *
+     * @param \Zend\Form\ElementInterface $element
+     * @return string
+     */
     public function getTableHeaderMarkup(ElementInterface $element)
     {
         $markup = '';
@@ -286,6 +303,12 @@ class BootstrapCollection extends AbstractHelper
         return $markup;
     }
 
+    /**
+     * get Markup for table row
+     *
+     * @param \Zend\Form\ElementInterface $element
+     * @return string
+     */
     public function getTableRowMarkup(ElementInterface $element)
     {
         $options = $element->getOptions();
