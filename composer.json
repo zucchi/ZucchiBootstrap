@@ -21,6 +21,9 @@
     "autoload": {
         "psr-0": {
             "ZucchiBootstrap": "src/"
-        }
+        },
+        "classmap": [
+            "./Module.php"
+        ]
     }
 }
