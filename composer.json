@@ -16,7 +16,7 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.4.1",
-        "zendframework/zendframework": "dev-master"
+        "zucchi/zucchi": "dev-master"
     },
     "autoload": {
         "psr-0": {
