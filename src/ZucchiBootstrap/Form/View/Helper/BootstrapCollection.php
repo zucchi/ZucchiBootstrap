@@ -109,7 +109,7 @@ class BootstrapCollection extends AbstractHelper
 
         $markup .= $this->getTemplateMarkup($element, $formStyle);
 
-        $attribs .= ' class="' . $element->getAttribute('class') . '" ';
+        $attribs .= $this->createAttributesString($element->getAttributes());
 
         $markup = sprintf(
             $this->templates[$formStyle],
