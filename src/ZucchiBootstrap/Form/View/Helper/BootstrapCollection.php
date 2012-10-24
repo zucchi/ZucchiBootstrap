@@ -46,13 +46,13 @@ class BootstrapCollection extends AbstractHelper
     protected $formStyle = 'vertical';
 
     protected $templates = array(
-        'vertical' => '<div%s>%s</div>',
-        'inline' => '<div%s>%s</div>',
-        'search' => '<div%s>%s</div>',
-        'horizontal' => '<div%s>%s</div>',
-        'table' => '<table%s>%s</table>',
+        'vertical' => '<div %s>%s</div>',
+        'inline' => '<div %s>%s</div>',
+        'search' => '<div %s>%s</div>',
+        'horizontal' => '<div %s>%s</div>',
+        'table' => '<table %s>%s</table>',
         'tableHead' => '<thead><tr%s>%s</tr></thead>',
-        'tableRow' => '<tr%s>%s</tr>',
+        'tableRow' => '<tr %s>%s</tr>',
     );
     
     /**
@@ -241,11 +241,14 @@ class BootstrapCollection extends AbstractHelper
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
         $rowHelper = $this->getRowHelper();
 
+
+
         if ($element instanceof CollectionElement && $element->shouldCreateTemplate()) {
             $elementOrFieldset = $element->getTemplateElement();
 
             if ($elementOrFieldset instanceof FieldsetInterface) {
-                $templateMarkup .= $this->render($elementOrFieldset);
+                if ($formStyle == 'table') $formStyle = 'tableRow';
+                $templateMarkup .= $this->render($elementOrFieldset, $formStyle);
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 $templateMarkup .= $rowHelper($elementOrFieldset, $formStyle);
             }
@@ -325,7 +328,7 @@ class BootstrapCollection extends AbstractHelper
 
         foreach($element->getIterator() as $elementOrFieldset) {
             if ($elementOrFieldset instanceof FieldsetInterface) {
-                $markup .= $this->render($elementOrFieldset);
+                $markup .= $this->render($elementOrFieldset, 'tableRow');
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 $markup .= $rowHelper($elementOrFieldset, 'tableRow');
             }
