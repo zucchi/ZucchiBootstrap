@@ -109,7 +109,7 @@ class BootstrapCollection extends AbstractHelper
 
         $markup .= $this->getTemplateMarkup($element, $formStyle);
 
-        $attribs .= $this->createAttributesString($element->getAttributes());
+        $attribs .= ' ' . $this->createAttributesString($element->getAttributes()) . ' ';
 
         $markup = sprintf(
             $this->templates[$formStyle],
@@ -241,11 +241,14 @@ class BootstrapCollection extends AbstractHelper
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
         $rowHelper = $this->getRowHelper();
 
+
+
         if ($element instanceof CollectionElement && $element->shouldCreateTemplate()) {
             $elementOrFieldset = $element->getTemplateElement();
 
             if ($elementOrFieldset instanceof FieldsetInterface) {
-                $templateMarkup .= $this->render($elementOrFieldset);
+                if ($formStyle == 'table') $formStyle = 'tableRow';
+                $templateMarkup .= $this->render($elementOrFieldset, $formStyle);
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 $templateMarkup .= $rowHelper($elementOrFieldset, $formStyle);
             }
@@ -325,7 +328,7 @@ class BootstrapCollection extends AbstractHelper
 
         foreach($element->getIterator() as $elementOrFieldset) {
             if ($elementOrFieldset instanceof FieldsetInterface) {
-                $markup .= $this->render($elementOrFieldset);
+                $markup .= $this->render($elementOrFieldset, 'tableRow');
             } elseif ($elementOrFieldset instanceof ElementInterface) {
                 $markup .= $rowHelper($elementOrFieldset, 'tableRow');
             }
