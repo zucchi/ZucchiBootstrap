@@ -46,13 +46,13 @@ class BootstrapCollection extends AbstractHelper
     protected $formStyle = 'vertical';
 
     protected $templates = array(
-        'vertical' => '<div%s>%s</div>',
-        'inline' => '<div%s>%s</div>',
-        'search' => '<div%s>%s</div>',
-        'horizontal' => '<div%s>%s</div>',
-        'table' => '<table%s>%s</table>',
+        'vertical' => '<div %s>%s</div>',
+        'inline' => '<div %s>%s</div>',
+        'search' => '<div %s>%s</div>',
+        'horizontal' => '<div %s>%s</div>',
+        'table' => '<table %s>%s</table>',
         'tableHead' => '<thead><tr%s>%s</tr></thead>',
-        'tableRow' => '<tr%s>%s</tr>',
+        'tableRow' => '<tr %s>%s</tr>',
     );
     
     /**
