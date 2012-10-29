@@ -25,8 +25,9 @@ use Zend\Form\ElementInterface;
 use Zend\Form\Exception;
 use Zend\Form\View\Helper\FormRow;
 use Zend\Form\View\Helper\FormLabel;
-use Zend\Form\View\Helper\FormElement;
 use Zend\Form\View\Helper\FormElementErrors;
+
+use Zucchi\Form\View\Helper\FormElement;
 
 /**
  * @category   Zend
@@ -381,4 +382,27 @@ class BootstrapRow extends FormRow
         return $elementString;
         
     }
+
+    /**
+     * Retrieve the FormElement helper
+     *
+     * @return FormElement
+     */
+    protected function getElementHelper()
+    {
+        if ($this->elementHelper) {
+            return $this->elementHelper;
+        }
+
+        if (method_exists($this->view, 'plugin')) {
+            $this->elementHelper = $this->view->plugin('form_element');
+        }
+
+        if (!$this->elementHelper instanceof FormElement) {
+            $this->elementHelper = new FormElement();
+        }
+
+        return $this->elementHelper;
+    }
+
 }
