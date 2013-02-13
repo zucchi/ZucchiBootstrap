@@ -8,7 +8,7 @@ Installation
 
 From the root of your ZF2 Skeleton Application run
 
-    ./composer.phar require zucchi/admin
+    ./composer.phar require zucchi/bootstrap
     
 This module will require your vhost to use an AliasMatch
 
