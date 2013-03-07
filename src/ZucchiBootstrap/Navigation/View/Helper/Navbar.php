@@ -250,6 +250,9 @@ class Navbar extends AbstractHelper
         }
         
         $html = '<' . $element . $this->htmlAttribs($attribs) . '>';
+        if ($page->get('icon')) {
+            $html .= '<i class="'.$page->get('icon').'"></i> ';
+        }
         if ($escapeLabel === true) {
             $escaper = $this->view->plugin('escapeHtml');
             $html .= $escaper($label);
