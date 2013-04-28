@@ -197,6 +197,12 @@ class BootstrapRow extends FormRow
             $elementString       = $elementHelper->render($element);
             
             $elementString = $this->renderBootstrapOptions($elementString, $bootstrapOptions);
+
+            if (!empty($label) && null !== ($translator = $this->getTranslator())) {
+                $label = $translator->translate(
+                    $label, $this->getTranslatorTextDomain()
+                );
+            }
             
             $markup = sprintf($this->defaultElementTemplates[$formStyle],
                 $labelOpen,
