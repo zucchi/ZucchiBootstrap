@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
+ * @copyright  Copyright (c) 2005-2013 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -34,7 +34,7 @@ use ZucchiBootstrap\Form\View\Helper\BootstrapRow;
  * @category   Zend
  * @package    Zend_Form
  * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zucchi Limited (http://zucchi.co.uk)
+ * @copyright  Copyright (c) 2005-2013 Zucchi Limited (http://zucchi.co.uk)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class BootstrapCollection extends AbstractHelper
